@@ -294,24 +294,26 @@ def requestRootPath() -> str:
 # Mainframe
 if __name__ == '__main__':
     rootPath = requestRootPath()
-    worldList = getAllWorlds(rootPath)
-    worldSelected = menu(worldList, "请输入世界前的编号选择想要操作的世界")
-    modeList = ["备份", "清除无用区块", "还原备份", "删除备份"]
-    modeSelected = menu(modeList, "请输入需要进行的操作")
-    worldPath = os.path.join(rootPath, worldSelected)
-    if modeSelected == modeList[0]:
-        backupRegionFiles(worldPath)
-        pass
-    elif modeSelected == modeList[1]:
-        resPath = findResidenceSavePath(rootPath, worldSelected)
-        residences = getResidencesArea(resPath)
-        chunks = convertAreaToChunk(residences)
-        whiteList = generateMcaWhitelist(chunks)
-        deleteUnusedMca(worldPath, whiteList)
-        pass
-    elif modeSelected == modeList[2]:
-        restoreRegionBackup(worldPath)
-        pass
-    elif modeSelected == modeList[3]:
-        deleteRegionBackup(worldPath)
-        pass
+    while True:
+        worldList = getAllWorlds(rootPath)
+        worldSelected = menu(worldList, "请输入世界前的编号选择想要操作的世界")
+        modeList = ["备份", "清除无用区块", "还原备份", "删除备份"]
+        modeSelected = menu(modeList, "请输入需要进行的操作")
+        worldPath = os.path.join(rootPath, worldSelected)
+        if modeSelected == modeList[0]:
+            backupRegionFiles(worldPath)
+            pass
+        elif modeSelected == modeList[1]:
+            resPath = findResidenceSavePath(rootPath, worldSelected)
+            residences = getResidencesArea(resPath)
+            chunks = convertAreaToChunk(residences)
+            whiteList = generateMcaWhitelist(chunks)
+            deleteUnusedMca(worldPath, whiteList)
+            pass
+        elif modeSelected == modeList[2]:
+            restoreRegionBackup(worldPath)
+            pass
+        elif modeSelected == modeList[3]:
+            deleteRegionBackup(worldPath)
+            pass
+        print("\n>=====任务完成=====<\n")
