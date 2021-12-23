@@ -262,18 +262,23 @@ def deleteRegionBackup(worldSavePath: str):
 def menu(menuList: list, displayInfo: str) -> str:
     for tag in range(len(menuList)):
         print("   " + str(tag) + " : " + menuList[tag])
-    # noinspection PyBroadException
-    try:
-        inputTage = int(input('>' + displayInfo + '：'))
-    except:
-        inputTage = 0
+    inputTag = ''
     while True:
-        if inputTage >= len(menuList) or inputTage < 0:
+        # noinspection PyBroadException
+        try:
+            inputTag = int(input('>' + displayInfo + '：'))
+        except:
+            inputTag = ''
+        finally:
+            if inputTag != '':
+                break
+    while True:
+        if inputTag >= len(menuList) or inputTag < 0:
             inputTage = int(input(">编号错误，请重新输入："))
         else:
             break
-    print("|当前的选择是：" + menuList[inputTage])
-    return menuList[inputTage]
+    print("|当前的选择是：" + menuList[inputTag])
+    return menuList[inputTag]
 
 
 def requestRootPath() -> str:
@@ -291,15 +296,32 @@ def requestRootPath() -> str:
         sys.exit("程序终止。")
 
 
+def locateWorldSavePath(worldFolderPath: str) -> str:
+    """
+    定位 region 文件夹所在的位置
+    @param worldFolderPath:
+    @return:
+    """
+    fileList = os.listdir(worldFolderPath)
+    if "region" in fileList:
+        return worldFolderPath
+    else:
+        for folder in fileList:
+            if 'DIM' in folder:
+                return os.path.join(worldFolderPath, folder)
+        return "null"
+
+
 # Mainframe
 if __name__ == '__main__':
     rootPath = requestRootPath()
+    worldList = getAllWorlds(rootPath)
     while True:
-        worldList = getAllWorlds(rootPath)
         worldSelected = menu(worldList, "请输入世界前的编号选择想要操作的世界")
         modeList = ["备份", "清除无用区块", "还原备份", "删除备份"]
         modeSelected = menu(modeList, "请输入需要进行的操作")
-        worldPath = os.path.join(rootPath, worldSelected)
+        worldFolder = os.path.join(rootPath, worldSelected)
+        worldPath = locateWorldSavePath(worldFolder)
         if modeSelected == modeList[0]:
             backupRegionFiles(worldPath)
             pass
@@ -316,4 +338,3 @@ if __name__ == '__main__':
         elif modeSelected == modeList[3]:
             deleteRegionBackup(worldPath)
             pass
-        print("\n>=====任务完成=====<\n")
