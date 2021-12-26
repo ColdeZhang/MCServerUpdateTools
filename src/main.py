@@ -318,14 +318,17 @@ if __name__ == '__main__':
     worldList = getAllWorlds(rootPath)
     while True:
         worldSelected = menu(worldList, "请输入世界前的编号选择想要操作的世界")
+        os.system("clear")
         modeList = ["备份", "清除无用区块", "还原备份", "删除备份"]
         modeSelected = menu(modeList, "请输入需要进行的操作")
         worldFolder = os.path.join(rootPath, worldSelected)
         worldPath = locateWorldSavePath(worldFolder)
         if modeSelected == modeList[0]:
+            os.system("clear")
             backupRegionFiles(worldPath)
             pass
         elif modeSelected == modeList[1]:
+            os.system("clear")
             resPath = findResidenceSavePath(rootPath, worldSelected)
             residences = getResidencesArea(resPath)
             chunks = convertAreaToChunk(residences)
@@ -333,8 +336,10 @@ if __name__ == '__main__':
             deleteUnusedMca(worldPath, whiteList)
             pass
         elif modeSelected == modeList[2]:
+            os.system("clear")
             restoreRegionBackup(worldPath)
             pass
         elif modeSelected == modeList[3]:
+            os.system("clear")
             deleteRegionBackup(worldPath)
             pass
