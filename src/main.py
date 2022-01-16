@@ -100,8 +100,8 @@ def generateMcaWhitelist(chunkAreaList: list) -> list:
     for area in chunkAreaList:
         regionCoordinate: dict = {"x1": math.ceil(area["x1"] / 32), "x2": math.ceil(area["x2"] / 32),
                                   "z1": math.ceil(area["z1"] / 32), "z2": math.ceil(area["z2"] / 32)}
-        for x in range(regionCoordinate["x1"] - 1, regionCoordinate["x2"] + 1):
-            for z in range(regionCoordinate["z1"] - 1, regionCoordinate["z2"] + 1):
+        for x in range(regionCoordinate["x1"] - 2, regionCoordinate["x2"] + 2):
+            for z in range(regionCoordinate["z1"] - 2, regionCoordinate["z2"] + 2):
                 usedRegion: str = str(x) + '.' + str(z)
                 regionFileName: str = "r." + usedRegion + ".mca"
                 if regionFileName not in regionFiles:
