@@ -222,8 +222,10 @@ def restoreRegionBackup(worldSavePath: str):
         selectedBackupPath = os.path.join(regionBackupPath, backupList[userInput])
         # noinspection PyBroadException
         try:
-            for mca in os.listdir(regionPath):
+            print("|删除旧文件：")
+            for mca in tqdm(os.listdir(regionPath)):
                 os.remove(os.path.join(regionPath, mca))
+            print("|开始恢复备份：")
             for mca in tqdm(os.listdir(selectedBackupPath)):
                 shutil.copy(os.path.join(selectedBackupPath, mca), regionPath)
             print("|恢复备份 " + backupList[userInput] + " 完成！")
