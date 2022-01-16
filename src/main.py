@@ -165,6 +165,7 @@ def deleteUnusedMca(worldSavePath: str, mcaWhitelist: list):
     regionPath = os.path.join(worldSavePath, "region")
     mcaFileList = os.listdir(regionPath)
     userInput: str = ''
+    mcaBlackList = []
     while userInput != 'Y' and userInput != 'N':
         if not os.path.exists(regionBackupPath):
             userInput = input(">警告：没有监测到任何存档备份，在开始清理mca前强烈建议备份！（N：取消/Y：继续/B：备份）")
@@ -175,11 +176,17 @@ def deleteUnusedMca(worldSavePath: str, mcaWhitelist: list):
         if userInput != 'Y' and userInput != 'N':
             print("|输入错误，请重试（N：取消/Y：继续）")
     if userInput == 'Y':
-        for mca in mcaWhitelist:
+        mcaBlackList = mcaFileList
+        for white in mcaWhitelist:
+            mcaBlackList.remove(white)
+        for mca in tqdm(mcaBlackList):
             # noinspection PyBroadException
             try:
-                removePath = os.path.join(regionPath, mca)
-                os.remove(removePath)
+                if mca not in mcaBlackList:
+                    removePath = os.path.join(regionPath, mca)
+                    os.remove(removePath)
+                else:
+                    print("|跳过白名单： " + mca)
             except:
                 print("|警告：未找到文件 " + mca)
     else:
