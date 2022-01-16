@@ -182,7 +182,7 @@ def deleteUnusedMca(worldSavePath: str, mcaWhitelist: list):
         for mca in tqdm(mcaBlackList):
             # noinspection PyBroadException
             try:
-                if mca not in mcaBlackList:
+                if mca not in mcaWhitelist:
                     removePath = os.path.join(regionPath, mca)
                     os.remove(removePath)
                 else:
